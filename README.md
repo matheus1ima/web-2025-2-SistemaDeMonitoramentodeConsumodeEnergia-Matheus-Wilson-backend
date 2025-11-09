@@ -2,8 +2,8 @@
 # ⚡ Sistema de Monitoramento de Consumo de Energia (Energia+) - Backend
 
 ## 👥 Integrantes
-- Matheus [Sobrenome]
-- Wilson [Sobrenome]
+- Antônio Matheus de Oliveira Lima
+- José Wilson Bezerra Neto
 
 ---
 
