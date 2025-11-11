@@ -38,7 +38,7 @@ cd web-2025-2-SistemaDeMonitoramentodeConsumodeEnergia-Matheus-Wilson-backend
 ### 2. Crie e ative o ambiente virtual:
 ```bash
 python -m venv venv
-source venv/bin/activate   # Linux/Mac
+source venv/bin/activate   # Linux
 venv\Scripts\activate      # Windows
 ```
 ### 3. Instale as dependências:
