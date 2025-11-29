@@ -28,6 +28,19 @@ def criar_consumo(consumo: schemas.ConsumoCreate, db: Session = Depends(get_db))
     db.commit()
     db.refresh(novo)
     return novo
+    
+@router.put("/{id}")
+def atualizar_consumo(id: int, consumo: schemas.ConsumoCreate, db: Session = Depends(get_db)):
+    item = db.query(models.Consumo).filter(models.Consumo.id == id).first()
+    if not item:
+        raise HTTPException(status_code=404, detail="Registro não encontrado")
+    item.data = consumo.data
+    item.kwh = consumo.kwh
+    item.custo = consumo.custo
+    item.observacao = consumo.observacao
+    db.commit()
+    db.refresh(item)
+    return item
 
 @router.delete("/{consumo_id}")
 def deletar_consumo(consumo_id: int, db: Session = Depends(get_db)):
