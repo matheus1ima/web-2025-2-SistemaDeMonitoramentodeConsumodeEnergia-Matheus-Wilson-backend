@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 import models, schemas
 from database import SessionLocal
 from auth_utils import get_current_user
+from auth_utils import get_bearer_token
 
 router = APIRouter(prefix="/consumo", tags=["Consumo"])
 
@@ -16,12 +17,14 @@ def get_db():
 
 
 @router.get("/", response_model=list[schemas.Consumo])
-def listar_consumos(db: Session = Depends(get_db), token: str = Header()):
+def listar_consumos(db: Session = Depends(get_db), authorization: str | None = Header(default=None)):
+    token = get_bearer_token(authorization)
     user = get_current_user(token, db)
     return db.query(models.Consumo).filter(models.Consumo.user_id == user.id).all()
 
 @router.get("/{consumo_id}", response_model=schemas.Consumo)
-def obter_consumo(consumo_id: int, db: Session = Depends(get_db), token: str = Header()):
+def obter_consumo(consumo_id: int, db: Session = Depends(get_db), authorization: str | None = Header(default=None)):
+    token = get_bearer_token(authorization)
     user = get_current_user(token, db)
 
     item = db.query(models.Consumo).filter(
@@ -35,7 +38,8 @@ def obter_consumo(consumo_id: int, db: Session = Depends(get_db), token: str = H
     return item
 
 @router.post("/", response_model=schemas.Consumo)
-def criar_consumo(consumo: schemas.ConsumoCreate, db: Session = Depends(get_db), token: str = Header()):
+def criar_consumo(consumo: schemas.ConsumoCreate, db: Session = Depends(get_db), authorization: str | None = Header(default=None)):
+    token = get_bearer_token(authorization)
     user = get_current_user(token, db)
 
     novo = models.Consumo(
@@ -54,8 +58,9 @@ def criar_consumo(consumo: schemas.ConsumoCreate, db: Session = Depends(get_db),
 @router.put("/{id}", response_model=schemas.Consumo)
 def atualizar_consumo(id: int, consumo: schemas.ConsumoCreate,
                       db: Session = Depends(get_db),
-                      token: str = Header()):
+                      authorization: str | None = Header(default=None)):
 
+    token = get_bearer_token(authorization)
     user = get_current_user(token, db)
 
     item = db.query(models.Consumo).filter(
@@ -76,7 +81,8 @@ def atualizar_consumo(id: int, consumo: schemas.ConsumoCreate,
     return item
 
 @router.delete("/{consumo_id}")
-def deletar_consumo(consumo_id: int, db: Session = Depends(get_db), token: str = Header()):
+def deletar_consumo(consumo_id: int, db: Session = Depends(get_db), authorization: str | None = Header(default=None)):
+    token = get_bearer_token(authorization)
     user = get_current_user(token, db)
 
     consumo = db.query(models.Consumo).filter(
