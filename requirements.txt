@@ -3,5 +3,5 @@ uvicorn
 sqlalchemy
 pydantic
 bcrypt==4.0.1
-"passlib[bcrypt]"
+passlib[bcrypt]
 python-jose
